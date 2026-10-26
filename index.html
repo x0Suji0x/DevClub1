@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A realistic vintage skeuomorphic tear-off wall calendar crafted with pure CSS, HTML5, and vanilla JavaScript.">
+  <title>Tear-off Calendar • Vintage Wall Calendar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient plaster wall container -->
+  <main class="wall-scene" id="wall-scene">
+
+    <!-- Top Wall Mount: Antique Brass Screw & Leather Hanging Strap -->
+    <div class="wall-mount" aria-hidden="true">
+      <div class="brass-screw">
+        <div class="screw-slot"></div>
+      </div>
+      <div class="leather-strap"></div>
+      <div class="brass-grommet"></div>
+    </div>
+
+    <!-- Calendar Backing Board (Burgundy Leather) -->
+    <section class="calendar-board" aria-label="Vintage Tear-off Wall Calendar">
+      <!-- Stitched Perimeter border (visual only) -->
+      <div class="leather-stitch" aria-hidden="true"></div>
+
+      <!-- Corner Brass Protectors (visual only) -->
+      <div class="corner-bracket corner-tl" aria-hidden="true"></div>
+      <div class="corner-bracket corner-tr" aria-hidden="true"></div>
+      <div class="corner-bracket corner-bl" aria-hidden="true"></div>
+      <div class="corner-bracket corner-br" aria-hidden="true"></div>
+
+      <!-- Controls & Header Bar -->
+      <header class="calendar-header">
+        <div class="header-brass-plaque" aria-hidden="true">
+          <span class="plaque-text">CHRONOS &amp; CO. • DAILY CALENDAR</span>
+        </div>
+
+        <nav class="calendar-controls" aria-label="Calendar Controls">
+          <!-- Sound Toggle Button -->
+          <button type="button" 
+                  id="sound-toggle" 
+                  class="tactile-btn sound-btn" 
+                  aria-label="Sound effects: On" 
+                  aria-pressed="true" 
+                  title="Toggle paper-tear sound effects">
+            <span class="btn-icon" id="sound-icon" aria-hidden="true">🔊</span>
+            <span class="btn-label" id="sound-label">Sound ON</span>
+          </button>
+
+          <!-- Reset to Today Button -->
+          <button type="button" 
+                  id="reset-btn" 
+                  class="tactile-btn reset-btn" 
+                  aria-label="Reset calendar to today's date" 
+                  title="Return to today's date">
+            <span class="btn-icon" aria-hidden="true">↺</span>
+            <span class="btn-label">Today</span>
+          </button>
+        </nav>
+      </header>
+
+      <!-- Spiral Metal Binding & Rings -->
+      <div class="spiral-binding-bar" aria-hidden="true">
+        <div class="binding-plate"></div>
+        <div class="spiral-rings-row">
+          <div class="spiral-ring" style="--ring-index: 0">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+          <div class="spiral-ring" style="--ring-index: 1">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+          <div class="spiral-ring" style="--ring-index: 2">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+          <div class="spiral-ring" style="--ring-index: 3">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+          <div class="spiral-ring" style="--ring-index: 4">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+          <div class="spiral-ring" style="--ring-index: 5">
+            <div class="ring-loop"></div>
+            <div class="ring-shadow"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar Paper Pad Stage (3D perspective stage for stacked sheets & tearing) -->
+      <div class="paper-pad-stage" id="paper-pad-stage">
+
+        <!-- 3D Paper Stack Rim (multi-layered box-shadow simulates 300+ pages of paper thickness) -->
+        <div class="paper-stack-base" aria-hidden="true"></div>
+
+        <!-- Next Day Sheet (Sits underneath, revealed when the active sheet is torn) -->
+        <article class="paper-sheet sheet-under" id="under-sheet" aria-hidden="true">
+          <!-- Punched ring holes -->
+          <div class="punched-holes-row">
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+          </div>
+
+          <!-- Perforation crease line -->
+          <div class="perforation-crease"></div>
+
+          <!-- Date Content -->
+          <div class="sheet-body">
+            <div class="date-weekday" id="under-weekday">---</div>
+            <div class="date-day" id="under-day">--</div>
+            <div class="date-month-year" id="under-month-year">--- ----</div>
+            <div class="note-display">
+              <span class="note-quote" id="under-note-text">Make today count.</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Active Today / Current Sheet (Interactive & Focusable) -->
+        <article class="paper-sheet sheet-active" 
+                 id="active-sheet" 
+                 role="button" 
+                 tabindex="0" 
+                 aria-label="Calendar page. Click or press Enter to tear off this day."
+                 title="Click or press Space / Enter to tear off">
+          
+          <!-- Punched ring holes -->
+          <div class="punched-holes-row" aria-hidden="true">
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+          </div>
+
+          <!-- Perforation crease line -->
+          <div class="perforation-crease" aria-hidden="true"></div>
+
+          <!-- Main Date Display -->
+          <div class="sheet-body">
+            <div class="date-weekday" id="active-weekday">MONDAY</div>
+            <div class="date-day" id="active-day">26</div>
+            <div class="date-month-year" id="active-month-year">OCTOBER 2026</div>
+
+            <!-- Handwritten Note Section (Clickable to edit note) -->
+            <div class="note-display" 
+                 id="note-trigger" 
+                 role="button" 
+                 tabindex="0" 
+                 aria-label="Personal daily note. Click or press Enter to edit note."
+                 title="Click to write or edit your personal note for this day">
+              <span class="note-pin" aria-hidden="true">✎</span>
+              <p class="note-quote" id="active-note-text">Make today count.</p>
+              <span class="note-edit-hint" aria-hidden="true">edit note</span>
+            </div>
+          </div>
+
+          <!-- Subtle tear-off visual cue at bottom edge -->
+          <footer class="sheet-footer" aria-hidden="true">
+            <span class="tear-cue">✦ Click page to tear off ✦</span>
+          </footer>
+        </article>
+
+      </div><!-- /paper-pad-stage -->
+
+      <!-- Backing Board Bottom Details: Brass plate rivet accents -->
+      <div class="board-footer-accents" aria-hidden="true">
+        <div class="brass-rivet rivet-left"></div>
+        <div class="brass-plaque-small">EST. 1898</div>
+        <div class="brass-rivet rivet-right"></div>
+      </div>
+
+    </section>
+
+    <!-- Accessible Live Region for Screen Readers -->
+    <div id="sr-announcements" class="sr-only" aria-live="polite"></div>
+
+  </main>
+
+  <!-- Hidden Personal Note Editor Dialog Modal -->
+  <dialog class="note-dialog" id="note-dialog" aria-labelledby="dialog-heading">
+    <div class="dialog-paper">
+      <div class="dialog-perforation" aria-hidden="true"></div>
+      <h2 id="dialog-heading" class="dialog-title">Daily Note</h2>
+      <p class="dialog-date-subtitle" id="dialog-date-subtitle">October 26, 2026</p>
+
+      <form id="note-form" method="dialog">
+        <label for="note-textarea" class="dialog-label">Personal thoughts or reminders for this date:</label>
+        <textarea id="note-textarea" 
+                  name="note" 
+                  rows="3" 
+                  maxlength="240" 
+                  placeholder="Write your note here... (e.g., Launch day, Mom's birthday, Walk 10,000 steps)"></textarea>
+        
+        <div class="dialog-char-counter">
+          <span id="char-count">0</span> / 240 characters
+        </div>
+
+        <div class="dialog-buttons">
+          <button type="submit" id="save-note-btn" class="tactile-btn dialog-save-btn">
+            Save Note
+          </button>
+          <button type="button" id="clear-note-btn" class="tactile-btn dialog-clear-btn" title="Remove note and restore default">
+            Clear
+          </button>
+          <button type="button" id="cancel-note-btn" class="tactile-btn dialog-cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>

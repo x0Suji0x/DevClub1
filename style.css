@@ -1,0 +1,1066 @@
+/* ==========================================================================
+   TEAR-OFF CALENDAR • SKEUOMORPHIC STYLESHEET
+   Pure CSS3 vintage aesthetic: Burgundy leather, antique brass, cream paper,
+   embossed typography, realistic lighting, and stacked paper depth.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Wall colors */
+  --wall-color-base: #ded6c7;
+  --wall-color-warm: #ece5d8;
+  --wall-color-shade: #c2b7a3;
+  --wall-vignette: rgba(45, 35, 25, 0.28);
+
+  /* Burgundy Leather Backing */
+  --leather-top: #7d202d;
+  --leather-mid: #5a141e;
+  --leather-deep: #3d0c13;
+  --leather-dark: #27060b;
+  --leather-stitch: rgba(235, 205, 155, 0.55);
+  --leather-stitch-shadow: rgba(0, 0, 0, 0.85);
+
+  /* Antique Brass Metal */
+  --brass-specular: #fff8d6;
+  --brass-highlight: #f3d47d;
+  --brass-mid: #b8860b;
+  --brass-aged: #8a6208;
+  --brass-shadow: #3f2a03;
+  --brass-rivet-border: #443007;
+
+  /* Cream Stacked Paper */
+  --paper-cream-top: #fdfbf7;
+  --paper-cream-mid: #f7f1e4;
+  --paper-cream-dark: #eee3ce;
+  --paper-stack-edge-1: #e7ddc7;
+  --paper-stack-edge-2: #dcceb3;
+  --paper-stack-edge-3: #cbba9a;
+  --paper-perforation: rgba(135, 110, 80, 0.55);
+
+  /* Typography / Ink Colors */
+  --ink-burgundy: #55121b;
+  --ink-burgundy-light: #731e2a;
+  --ink-espresso: #2e211b;
+  --ink-sepia: #4d382c;
+  --ink-pencil: #2c384a;
+  --ink-faded: #7a6a5d;
+
+  /* Dimensions & Spacing */
+  --board-max-width: 460px;
+  --board-radius: 24px;
+  --paper-radius: 6px;
+  --perspective: 1100px;
+  --transition-tactile: 0.15s cubic-bezier(0.2, 0, 0.1, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Box Sizing & Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink-espresso);
+  overflow-x: hidden;
+  background-color: var(--wall-color-base);
+}
+
+/* --------------------------------------------------------------------------
+   3. Wall Background (Layered Plaster & Ambient Lighting)
+   -------------------------------------------------------------------------- */
+.wall-scene {
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(2rem, 5vw, 4rem) 1rem clamp(3rem, 6vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  /* Layered gradients creating realistic ambient lighting, room vignette & subtle plaster grain */
+  background-color: var(--wall-color-base);
+  background-image:
+    /* Directional room spotlight coming from top-left */
+    radial-gradient(ellipse 70% 60% at 30% 18%, rgba(255, 255, 255, 0.45) 0%, transparent 70%),
+    /* Room vignette around outer perimeter */
+    radial-gradient(ellipse 90% 85% at 50% 50%, transparent 45%, var(--wall-vignette) 100%),
+    /* Subtle wall plaster micro-variation */
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.012) 0px, rgba(0, 0, 0, 0.012) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 3px),
+    linear-gradient(to bottom, var(--wall-color-warm) 0%, var(--wall-color-shade) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   4. Wall Mount: Antique Brass Screw & Leather Hanging Strap
+   -------------------------------------------------------------------------- */
+.wall-mount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: -18px;
+  z-index: 1;
+}
+
+/* Antique brass slotted screw head */
+.brass-screw {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--brass-specular) 0%, var(--brass-highlight) 30%, var(--brass-mid) 70%, var(--brass-shadow) 100%);
+  border: 1px solid var(--brass-rivet-border);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+}
+
+.screw-slot {
+  width: 14px;
+  height: 2px;
+  background-color: var(--brass-shadow);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: rotate(32deg);
+}
+
+/* Burgundy leather hanging tab */
+.leather-strap {
+  width: 32px;
+  height: 38px;
+  margin-top: -10px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(to right, var(--leather-deep), var(--leather-mid) 45%, var(--leather-top) 55%, var(--leather-deep));
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 0 5px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 2;
+  border: 1px dashed var(--leather-stitch);
+  border-bottom: none;
+}
+
+/* Brass grommet at bottom of strap */
+.brass-grommet {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: -12px;
+  background: radial-gradient(circle at 40% 40%, var(--brass-highlight), var(--brass-aged));
+  border: 2px solid var(--brass-shadow);
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   5. Calendar Backing Board (Burgundy Leather)
+   -------------------------------------------------------------------------- */
+.calendar-board {
+  width: 100%;
+  max-width: var(--board-max-width);
+  position: relative;
+  border-radius: var(--board-radius);
+  padding: 1.5rem 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* Rich burgundy leather gradient simulating burnished patina */
+  background-color: var(--leather-mid);
+  background-image:
+    radial-gradient(ellipse 95% 45% at 50% 15%, rgba(255, 255, 255, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 80% at 50% 50%, var(--leather-mid) 0%, var(--leather-deep) 70%, var(--leather-dark) 100%),
+    /* Micro leather grain */
+    repeating-linear-gradient(60deg, rgba(0, 0, 0, 0.02) 0px, rgba(0, 0, 0, 0.02) 1px, transparent 1px, transparent 3px);
+
+  /* Deep physical wall drop shadows and bevel highlight */
+  box-shadow:
+    /* Wall drop shadow layers */
+    0 10px 20px rgba(35, 12, 15, 0.35),
+    0 24px 45px rgba(15, 5, 8, 0.4),
+    0 40px 80px rgba(0, 0, 0, 0.32),
+    /* Top edge leather highlight */
+    inset 0 1px 2px rgba(255, 255, 255, 0.35),
+    /* Inner ambient leather depth */
+    inset 0 0 20px rgba(0, 0, 0, 0.65),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.85);
+
+  z-index: 2;
+  user-select: none;
+}
+
+/* Continuous stitched perimeter line */
+.leather-stitch {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  border: 2px dashed var(--leather-stitch);
+  border-radius: calc(var(--board-radius) - 6px);
+  pointer-events: none;
+  box-shadow:
+    0 1px 1px var(--leather-stitch-shadow),
+    inset 0 1px 1px var(--leather-stitch-shadow);
+  opacity: 0.85;
+}
+
+/* Antique brass corner brackets */
+.corner-bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.corner-tl {
+  top: 6px;
+  left: 6px;
+  border-top: 3px solid var(--brass-mid);
+  border-left: 3px solid var(--brass-mid);
+  border-top-left-radius: 18px;
+  box-shadow: -1px -1px 0 var(--brass-specular);
+}
+
+.corner-tr {
+  top: 6px;
+  right: 6px;
+  border-top: 3px solid var(--brass-mid);
+  border-right: 3px solid var(--brass-mid);
+  border-top-right-radius: 18px;
+  box-shadow: 1px -1px 0 var(--brass-specular);
+}
+
+.corner-bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 3px solid var(--brass-aged);
+  border-left: 3px solid var(--brass-aged);
+  border-bottom-left-radius: 18px;
+  box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.corner-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 3px solid var(--brass-aged);
+  border-right: 3px solid var(--brass-aged);
+  border-bottom-right-radius: 18px;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   6. Calendar Controls & Header Bar
+   -------------------------------------------------------------------------- */
+.calendar-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  position: relative;
+  z-index: 5;
+}
+
+/* Embossed brass brand plaque */
+.header-brass-plaque {
+  padding: 3px 14px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--brass-specular) 0%, var(--brass-highlight) 35%, var(--brass-mid) 75%, var(--brass-aged) 100%);
+  border: 1px solid var(--brass-shadow);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.plaque-text {
+  font-family: "Georgia", "Baskerville", "Times New Roman", serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--brass-shadow);
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+  display: block;
+}
+
+/* Control buttons navigation */
+.calendar-controls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Skeuomorphic tactile leather/brass button styling */
+.tactile-btn {
+  appearance: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  font-family: "Georgia", "Baskerville", serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #faebd7;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+  position: relative;
+  transition: transform var(--transition-tactile), box-shadow var(--transition-tactile), background var(--transition-tactile);
+
+  /* Deep burgundy leather texture button with stitched look */
+  background: linear-gradient(180deg, #781d29 0%, #58141d 50%, #3e0b12 100%);
+  border: 1px solid #280509;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.45),
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Button stitched effect */
+.tactile-btn::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  border: 1px dashed rgba(235, 205, 155, 0.4);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.tactile-btn:hover {
+  background: linear-gradient(180deg, #8a2432 0%, #661822 50%, #460e15 100%);
+  box-shadow:
+    0 6px 10px rgba(0, 0, 0, 0.5),
+    0 2px 3px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.7);
+  transform: translateY(-1px);
+}
+
+.tactile-btn:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #3d0c13 0%, #4f111a 60%, #5e1620 100%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(0, 0, 0, 0.85);
+}
+
+/* Accessible focus outline */
+.tactile-btn:focus-visible {
+  outline: 2px solid var(--brass-highlight);
+  outline-offset: 3px;
+}
+
+.btn-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   7. Antique Brass Spiral Binding & Rings
+   -------------------------------------------------------------------------- */
+.spiral-binding-bar {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  margin-bottom: -22px; /* Pulls rings into alignment with punched paper holes */
+}
+
+/* Antique brass mounting bar */
+.binding-plate {
+  width: 100%;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(180deg,
+    var(--brass-specular) 0%,
+    var(--brass-highlight) 20%,
+    var(--brass-mid) 50%,
+    var(--brass-aged) 85%,
+    var(--brass-shadow) 100%
+  );
+  border: 1px solid var(--brass-shadow);
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Screw bolts on the binding plate */
+.binding-plate::before,
+.binding-plate::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--brass-specular), var(--brass-aged));
+  border: 1px solid var(--brass-shadow);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.binding-plate::before {
+  left: 10px;
+}
+
+.binding-plate::after {
+  right: 10px;
+}
+
+/* Row of antique brass spiral loops */
+.spiral-rings-row {
+  width: 82%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: -8px;
+}
+
+.spiral-ring {
+  width: 16px;
+  height: 44px;
+  position: relative;
+}
+
+/* 3D antique brass curved cylinder loop */
+.ring-loop {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px 8px 6px 6px;
+  background: linear-gradient(90deg,
+    var(--brass-shadow) 0%,
+    var(--brass-aged) 18%,
+    var(--brass-highlight) 40%,
+    var(--brass-specular) 55%,
+    var(--brass-mid) 78%,
+    var(--brass-shadow) 100%
+  );
+  border: 1px solid rgba(60, 40, 10, 0.7);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.85);
+  position: relative;
+  z-index: 12;
+}
+
+/* Realistic cast shadow beneath each ring onto the cream paper */
+.ring-shadow {
+  position: absolute;
+  top: 6px;
+  left: 3px;
+  width: 16px;
+  height: 42px;
+  border-radius: 8px;
+  background-color: rgba(25, 12, 5, 0.35);
+  filter: blur(2px);
+  z-index: 9;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Calendar Paper Pad Stage & Stacked Pages Edge
+   -------------------------------------------------------------------------- */
+.paper-pad-stage {
+  width: 100%;
+  position: relative;
+  perspective: var(--perspective);
+  perspective-origin: 50% 10%;
+  z-index: 6;
+}
+
+/* 3D Paper Stack Edge (Dense stack of 300+ cream sheets) */
+.paper-stack-base {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 4px 4px var(--paper-radius) var(--paper-radius);
+  background-color: var(--paper-cream-dark);
+
+  /* Deep stacked paper edges via alternating micro-shadow stops */
+  box-shadow:
+    0 1px 0 var(--paper-stack-edge-1),
+    0 2px 0 var(--paper-stack-edge-2),
+    0 3px 0 var(--paper-stack-edge-1),
+    0 4px 0 var(--paper-stack-edge-2),
+    0 5px 0 var(--paper-stack-edge-1),
+    0 6px 0 var(--paper-stack-edge-2),
+    0 7px 0 var(--paper-stack-edge-1),
+    0 8px 0 var(--paper-stack-edge-3),
+    0 9px 0 var(--paper-stack-edge-1),
+    0 10px 0 var(--paper-stack-edge-3),
+    0 11px 0 var(--paper-stack-edge-1),
+    0 12px 0 var(--paper-stack-edge-3),
+    /* Soft ambient shadow cast by the thick pad onto the leather backing */
+    0 16px 24px rgba(35, 15, 10, 0.45),
+    0 28px 45px rgba(20, 8, 5, 0.35);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   9. Paper Sheet (Active and Underneath Pages)
+   -------------------------------------------------------------------------- */
+.paper-sheet {
+  width: 100%;
+  min-height: 440px;
+  border-radius: 4px 4px var(--paper-radius) var(--paper-radius);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.6rem 1.4rem 1.2rem;
+
+  /* Warm cream paper with tactile fibrous grain via layered gradients */
+  background-color: var(--paper-cream-top);
+  background-image:
+    radial-gradient(ellipse 90% 80% at 50% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 80%),
+    /* Micro paper fiber grain */
+    repeating-linear-gradient(0deg, rgba(140, 115, 80, 0.018) 0px, rgba(140, 115, 80, 0.018) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(140, 115, 80, 0.015) 0px, rgba(140, 115, 80, 0.015) 1px, transparent 1px, transparent 4px),
+    linear-gradient(to bottom, var(--paper-cream-top) 0%, var(--paper-cream-mid) 70%, var(--paper-cream-dark) 100%);
+
+  /* Subtle curl & elevation shadow on the active sheet */
+  box-shadow:
+    0 1px 3px rgba(40, 25, 15, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 2px rgba(120, 100, 70, 0.15);
+
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Underlying sheet positioned directly beneath the active sheet */
+.sheet-under {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Active front sheet */
+.sheet-active {
+  position: relative;
+  z-index: 5;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Focus indicator for keyboard navigation */
+.sheet-active:focus-visible {
+  outline: 3px solid var(--brass-mid);
+  outline-offset: 4px;
+}
+
+/* Punched holes row (mathematically aligned with spiral rings) */
+.punched-holes-row {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  width: 82%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* Dark 3D punched circular hole in the paper stack */
+.hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 45%, #120b05 0%, #22160b 65%, #3d2c18 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.95),
+    0 1px 1px rgba(255, 255, 255, 0.7);
+  display: block;
+}
+
+/* Dashed perforation line near the top */
+.perforation-crease {
+  width: calc(100% + 2.8rem);
+  margin-left: -1.4rem;
+  margin-top: 26px;
+  margin-bottom: 1.1rem;
+  height: 4px;
+  border-top: 2px dashed var(--paper-perforation);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+  position: relative;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   10. Typography & Date Layout
+   -------------------------------------------------------------------------- */
+.sheet-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.5rem 1rem;
+}
+
+/* Weekday header */
+.date-weekday {
+  font-family: "Georgia", "Baskerville", "Playfair Display", "Times New Roman", serif;
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-burgundy);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 -1px 0 rgba(0, 0, 0, 0.12);
+  line-height: 1.2;
+}
+
+/* Gigantic Day Number */
+.date-day {
+  font-family: "Georgia", "Baskerville", "Times New Roman", serif;
+  font-size: clamp(6.2rem, 24vw, 9.5rem);
+  font-weight: 900;
+  line-height: 0.88;
+  color: var(--ink-burgundy);
+  letter-spacing: -0.04em;
+  margin: 0.2rem 0;
+
+  /* Realistic embossed / letterpress text shadow */
+  text-shadow:
+    1px 1px 0 rgba(255, 255, 255, 0.9),
+    -1px -1px 1px rgba(0, 0, 0, 0.35),
+    0 3px 6px rgba(75, 15, 22, 0.22);
+}
+
+/* Month and Year */
+.date-month-year {
+  font-family: "Georgia", "Baskerville", "Times New Roman", serif;
+  font-size: clamp(1.2rem, 4.2vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-espresso);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Handwritten Note Section at bottom of sheet */
+.note-display {
+  margin-top: 1.1rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 6px;
+  background-color: rgba(235, 225, 205, 0.35);
+  border: 1px solid rgba(160, 135, 100, 0.25);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  max-width: 92%;
+  cursor: pointer;
+  transition: background-color var(--transition-tactile), border-color var(--transition-tactile), box-shadow var(--transition-tactile);
+}
+
+.note-display:hover {
+  background-color: rgba(235, 225, 205, 0.7);
+  border-color: rgba(140, 110, 75, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.note-display:focus-visible {
+  outline: 2px solid var(--brass-mid);
+  outline-offset: 2px;
+}
+
+.note-pin {
+  font-size: 0.9rem;
+  color: var(--ink-sepia);
+  opacity: 0.75;
+}
+
+.note-quote {
+  font-family: "Brush Script MT", "Caveat", "Segoe Script", "Lucida Handwriting", cursive, serif;
+  font-size: clamp(1.05rem, 3.4vw, 1.25rem);
+  font-style: italic;
+  color: var(--ink-pencil);
+  line-height: 1.3;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  word-break: break-word;
+}
+
+.note-edit-hint {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.65rem;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faded);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity var(--transition-tactile);
+}
+
+.note-display:hover .note-edit-hint,
+.note-display:focus-visible .note-edit-hint {
+  opacity: 1;
+}
+
+/* Sheet Footer: Subtle tear cue */
+.sheet-footer {
+  width: 100%;
+  text-align: center;
+  padding-top: 0.5rem;
+  border-top: 1px dotted rgba(160, 135, 100, 0.3);
+}
+
+.tear-cue {
+  font-family: "Georgia", serif;
+  font-size: 0.7rem;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: var(--ink-faded);
+  opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   11. Backing Board Footer Accents (Brass Rivets)
+   -------------------------------------------------------------------------- */
+.board-footer-accents {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.4rem;
+  position: relative;
+  z-index: 5;
+}
+
+.brass-rivet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--brass-specular), var(--brass-aged));
+  border: 1px solid var(--brass-shadow);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.brass-plaque-small {
+  font-family: "Georgia", serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(235, 205, 155, 0.75);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   12. 3D Tear-Off Keyframe Animation
+   -------------------------------------------------------------------------- */
+.sheet-active.tearing {
+  pointer-events: none;
+  animation: physicalPaperTear 0.78s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+  z-index: 20;
+}
+
+@keyframes physicalPaperTear {
+  0% {
+    transform: translateY(0) rotateX(0deg) rotateZ(0deg);
+    opacity: 1;
+    box-shadow:
+      0 1px 3px rgba(40, 25, 15, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  /* Tension phase: sheet pulls down and lifts slightly forward */
+  20% {
+    transform: translateY(10px) rotateX(-22deg) rotateZ(-3.5deg) scale(0.99);
+    box-shadow:
+      0 18px 30px rgba(30, 12, 15, 0.45),
+      0 30px 50px rgba(0, 0, 0, 0.35);
+  }
+  /* Rupture phase: paper snaps off rings, free floating in air */
+  45% {
+    transform: translateY(48px) rotateX(-50deg) rotateZ(8deg) scale(0.97);
+    opacity: 0.98;
+    box-shadow:
+      0 35px 55px rgba(25, 10, 12, 0.4),
+      0 50px 70px rgba(0, 0, 0, 0.28);
+  }
+  /* Fluttering downward */
+  75% {
+    transform: translateY(180px) rotateX(-75deg) rotateZ(18deg) scale(0.94);
+    opacity: 0.65;
+  }
+  /* Falling away completely */
+  100% {
+    transform: translateY(420px) rotateX(-95deg) rotateZ(32deg) scale(0.88);
+    opacity: 0;
+  }
+}
+
+/* Reduced Motion: skip all 3D falling animations */
+@media (prefers-reduced-motion: reduce) {
+  .sheet-active.tearing {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .tactile-btn,
+  .note-display {
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Hidden Personal Note Editor Dialog Modal
+   -------------------------------------------------------------------------- */
+.note-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 420px;
+  width: 90vw;
+  z-index: 100;
+  border-radius: 12px;
+  outline: none;
+}
+
+.note-dialog::backdrop {
+  background-color: rgba(30, 15, 18, 0.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* Dialog paper body */
+.dialog-paper {
+  background-color: var(--paper-cream-top);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(140, 115, 80, 0.018) 0px, rgba(140, 115, 80, 0.018) 1px, transparent 1px, transparent 3px),
+    linear-gradient(to bottom, var(--paper-cream-top) 0%, var(--paper-cream-mid) 100%);
+  border: 4px solid var(--leather-mid);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  position: relative;
+}
+
+/* Stitched border inside dialog */
+.dialog-paper::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  border: 1px dashed var(--leather-stitch);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.dialog-title {
+  font-family: "Georgia", "Baskerville", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-burgundy);
+  margin-bottom: 0.2rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.dialog-date-subtitle {
+  font-family: "Georgia", serif;
+  font-size: 0.85rem;
+  color: var(--ink-sepia);
+  margin-bottom: 1rem;
+}
+
+.dialog-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-espresso);
+  margin-bottom: 0.4rem;
+}
+
+/* Vintage fountain pen / ruled paper styled textarea */
+#note-textarea {
+  width: 100%;
+  font-family: "Brush Script MT", "Caveat", "Segoe Script", cursive, serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--ink-pencil);
+  background-color: #faf6ec;
+  border: 1px solid rgba(160, 130, 90, 0.4);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+  resize: vertical;
+  min-height: 90px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+  outline: none;
+}
+
+#note-textarea:focus {
+  border-color: var(--brass-mid);
+  box-shadow:
+    0 0 0 2px rgba(184, 134, 11, 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.dialog-char-counter {
+  text-align: right;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+  margin-top: 0.35rem;
+  margin-bottom: 1.2rem;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.dialog-save-btn {
+  background: linear-gradient(180deg, #8c2331 0%, #681722 50%, #4a0d16 100%);
+}
+
+.dialog-clear-btn {
+  background: linear-gradient(180deg, #6b5c54 0%, #4d4039 50%, #362c26 100%);
+  color: #f0e6d6;
+}
+
+.dialog-cancel-btn {
+  background: linear-gradient(180deg, #5c554e 0%, #423d38 50%, #2b2723 100%);
+  color: #e5ded3;
+}
+
+/* --------------------------------------------------------------------------
+   14. Screen Reader Utility Class
+   -------------------------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   15. Responsive Adaptations
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .wall-scene {
+    padding: 1.5rem 0.6rem 2.5rem;
+  }
+
+  .calendar-board {
+    padding: 1.2rem 1rem 1.4rem;
+  }
+
+  .paper-sheet {
+    min-height: 380px;
+    padding: 0.8rem 1rem 1rem;
+  }
+
+  .spiral-rings-row,
+  .punched-holes-row {
+    width: 86%;
+  }
+
+  .perforation-crease {
+    width: calc(100% + 2rem);
+    margin-left: -1rem;
+  }
+
+  .calendar-controls {
+    gap: 0.4rem;
+  }
+
+  .tactile-btn {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .paper-sheet {
+    min-height: 340px;
+  }
+
+  .btn-label {
+    display: none;
+  }
+
+  .tactile-btn {
+    padding: 0.45rem 0.65rem;
+  }
+}
